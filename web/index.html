@@ -33,14 +33,20 @@
   <link rel="manifest" href="manifest.json">
 
   <script>
+
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+
 </head>
 <body>
   <script>
+
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
@@ -54,6 +60,19 @@
         }
       });
     });
+
   </script>
+  <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD6KZmBARBjZw4My951-B8ODMGlntnUcjc",
+  authDomain: "wallpaper-e0c4a.firebaseapp.com",
+  projectId: "wallpaper-e0c4a",
+  storageBucket: "wallpaper-e0c4a.appspot.com",
+  messagingSenderId: "725312873565",
+  appId: "1:725312873565:web:258c066a86aa51fd37d9b4",
+  measurementId: "G-FMCPN7716B"
+};
+  firebase.initializeApp(firebaseConfig);
+</script>
 </body>
 </html>

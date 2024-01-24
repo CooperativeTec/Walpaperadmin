@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:walpaperadmin/ConstentValues.dart';
 import 'package:walpaperadmin/PaperSubCatagory/Custom_paper_add.dart';
+import 'package:walpaperadmin/PaperSubCatagory/CustomeIagesUploaded.dart';
+import 'package:walpaperadmin/Three_d_wallpaper_Uplad.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Home Screen"),
         centerTitle: true,
+        // leading: IconButton(
+        //     onPressed: (){
+        //       Get.to(Custom_paper_add(wallpaperkey:,));
+        //     },
+        //     icon: Icon(Icons.add)),
+
       ),
       body: Align(
         alignment: Alignment.topCenter,
@@ -28,36 +37,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.deepPurpleAccent,
               ),
               Expanded(
-                child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.0,
-                    padding: const EdgeInsets.all(4.0),
-                    mainAxisSpacing: 4.0,
-                    crossAxisSpacing: 4.0,
-                    children: <String>[
-                       "Custom",
-                      "Home",
-                      "3D"
-                    ].map((String url) {
-              return InkWell(
-                onTap: (){
-                  if(url=="Custom") {
-                    Get.to(Custom_paper_add());
-                  }
-                },
-                child: GridTile(
-                child:Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width*0.85,
-                            height: 80,
-                            child:Center(child: Text(url,style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900),))
-                          ),
-                        )
-                // Image.network(url, fit: BoxFit.cover)
-                ),
-              );
-              }).toList()),
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing:2.0,
+                      mainAxisSpacing: 2.0,
+                    ),
+                        itemCount: allTabs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          // children: <String>[
+                          //    "Custom",
+                          //   "Home",
+                          //   "3D"
+                          // ].map((String url)
+                          {
+                            return
+                              InkWell(
+                                onTap: () {
+                                  if(allTabs[index]['tabno']=="3D") {
+                                    Get.to(Three_d_wallpaper_upload());
+                                  }
+                                  else
+                                    {
+                                  Get.to(UploadedCustomPages(wallpaperkey: allTabs[index]['tabno'].toString()));
+                                  // Get.to(Custom_paper_add());
+                                  }
+                                },
+                                child: GridTile(
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              20)),
+                                      child: Container(
+                                          width: MediaQuery.of(context).size.width * 0.85,
+                                          height: 80,
+                                          child: Center(child: Text(
+                                            allTabs[index]['tabno'].toString(),
+                                            style: TextStyle(fontSize: 20,
+                                                fontWeight: FontWeight.w900),))
+                                      ),
+                                    )
+                                  // Image.network(url, fit: BoxFit.cover)
+                                ),
+                              );
+                          }
+                        }
+              )
+              // );
+        // .toList()),
 
                 // GridView.builder(
                 //   itemCount:5 ,

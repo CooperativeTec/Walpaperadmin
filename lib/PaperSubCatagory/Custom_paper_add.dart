@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:walpaperadmin/Databas/FirebaseConfig.dart';
+import 'package:walpaperadmin/FirebaseCrud/FirebaseCroud.dart';
 
 class Custom_paper_add extends StatefulWidget {
-  const Custom_paper_add({super.key});
+  String? wallpaperkey;
+   Custom_paper_add({super.key,required this.wallpaperkey});
 
   @override
   State<Custom_paper_add> createState() => _Custom_paper_addState();
@@ -15,7 +18,7 @@ class Custom_paper_add extends StatefulWidget {
 
 class _Custom_paper_addState extends State<Custom_paper_add> {
   List<XFile>? _images;
-
+ bool btnskippbool=false;
   Future<void> _pickImages() async {
     try {
       List<XFile>? result = await ImagePicker().pickMultiImage(
@@ -65,19 +68,26 @@ class _Custom_paper_addState extends State<Custom_paper_add> {
                   crossAxisSpacing: 4.0,
                   children: _images!.map((XFile image) {
                     return GridTile(
-                        child: Image.file(File(image.path)));
+                        child: kIsWeb? Image.network(image.path):Image.file(File(image.path),fit: BoxFit.cover,));
                   }).toList(),
                 ):Container(),
           ),
-          _images != null?
-          InkWell(
+          if (_images != null) InkWell(
             onTap: ()
             {
-              uploadImage(_images, "custompaper");
+              // _images!.forEach((element) {
+                FirebaseCrud().uploadImage(_images, widget.wallpaperkey);
+                setState(() {
+                  btnskippbool=true;
+                });
+              // });
+
+              // });
+
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
+              child: btnskippbool?Center(child: CircularProgressIndicator(),):Container(
                 width: MediaQuery.of(context).size.width*0.85,
                 height: 60,
                 decoration: BoxDecoration(
@@ -87,7 +97,7 @@ class _Custom_paper_addState extends State<Custom_paper_add> {
                 child: Center(child: Text("Upload",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w900),)),
               ),
             ),
-          ):Container()
+          ) else Container()
         ],
       ),
     );
